@@ -16,8 +16,6 @@ https://fazal305.github.io/CodeAlpha_MusicPlayer/
 
 ![Screenshot](image.png)
 
-```text
-assets/screenshots/music-player-preview.png
 ```
 
 ---
