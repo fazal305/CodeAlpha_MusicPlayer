@@ -1,175 +1,89 @@
-# 🎵 CodeAlpha Music Player
+# CodeAlpha Music Player
 
-A modern Music Player built using **HTML, CSS, and JavaScript** as part of the **CodeAlpha Frontend Development Internship**.
+A polished browser-based music player built with HTML, CSS, and vanilla JavaScript for the CodeAlpha Frontend Development Internship.
 
-The application provides a complete music playback experience with playlist management, autoplay, shuffle, repeat modes, volume controls, a clickable progress bar, and a rotating vinyl record interface.
+The project presents a complete audio playback experience with a responsive interface, playlist controls, shuffle and repeat modes, volume persistence, dynamic track artwork, and a vinyl-inspired visual theme.
 
----
-
-## 🚀 Live Demo
+## Live Demo
 
 https://fazal305.github.io/CodeAlpha_MusicPlayer/
 
----
+## Preview
 
-## 📸 Screenshot
+![CodeAlpha Music Player preview](image.png)
 
-![Screenshot](image.png)
+## Features
 
-```
+- Play, pause, next, and previous track controls
+- Interactive progress bar with live current time and duration
+- Click or drag seeking support
+- Volume slider with mute and unmute controls
+- Saved volume preference using local storage
+- Playlist panel with active track highlighting
+- Shuffle, repeat all, and repeat one playback modes
+- Automatic next-track playback
+- Dynamic cover art and accent color per song
+- Animated vinyl record and equalizer states
+- Responsive layout for desktop, tablet, and mobile screens
 
----
+## Tech Stack
 
-## ✨ Features
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- HTML5 Audio API
+- Local Storage
 
-### Music Controls
-
-* Play Song
-* Pause Song
-* Previous Track
-* Next Track
-
-### Progress Controls
-
-* Live Progress Bar
-* Click To Seek
-* Drag To Seek
-* Current Time Display
-* Total Duration Display
-
-### Volume Controls
-
-* Volume Slider
-* Mute / Unmute
-* Volume Percentage
-* Saved Volume Using Local Storage
-
-### Playlist
-
-* Playlist Panel
-* Click Any Song To Play
-* Active Song Highlight
-* Animated Equalizer Indicator
-
-### Playback Modes
-
-* Shuffle Mode
-* Repeat All
-* Repeat One
-* Autoplay Next Track
-
-### Visual Features
-
-* Rotating Vinyl Record
-* Album Artwork Printed On Vinyl Center
-* Dynamic Accent Colors Per Track
-* Neon Glow Effects
-* Mobile Responsive Layout
-
----
-
-## 🛠️ Technologies Used
-
-* HTML5
-* CSS3
-* JavaScript (Vanilla JS)
-* HTML5 Audio API
-* Local Storage
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```text
-CodeAlpha_MusicPlayer
-│
-├── index.html
-├── player-styles.css
-├── player-script.js
-├── README.md
-├── LICENSE
-├── .gitignore
-│
-└── assets
-    ├── audio
-    │   ├── track-01.mp3
-    │   ├── track-02.mp3
-    │   ├── track-03.mp3
-    │   ├── track-04.mp3
-    │   └── track-05.mp3
-    │
-    └── covers
-        ├── cover-01.jpg
-        ├── cover-02.jpg
-        ├── cover-03.jpg
-        ├── cover-04.jpg
-        └── cover-05.jpg
+CodeAlpha_MusicPlayer/
+|-- index.html
+|-- player-styles.css
+|-- player-script.js
+|-- README.md
+|-- LICENSE
+|-- image.png
+|-- assets/
+|   |-- audio/
+|   |   |-- track-01.mp3
+|   |   |-- track-02.mp3
+|   |   |-- track-03.mp3
+|   |   |-- track-04.mp3
+|   |   `-- track-05.mp3
+|   `-- covers/
+|       |-- cover-01.jpg
+|       |-- cover-02.jpg
+|       |-- cover-03.jpg
+|       |-- cover-04.jpg
+|       `-- cover-05.jpg
 ```
 
----
+## What I Practiced
 
-## 🎯 Internship Requirements Covered
+- Managing audio state with JavaScript
+- Building reusable UI update functions
+- Syncing playback state with visual feedback
+- Using browser storage for user preferences
+- Designing a responsive and accessible media interface
+- Handling edge cases such as missing cover artwork and track endings
 
-✔ Play / Pause
+## Run Locally
 
-✔ Previous / Next
+1. Clone the repository.
+2. Keep the audio files in `assets/audio`.
+3. Keep the cover images in `assets/covers`.
+4. Open `index.html` in a browser.
 
-✔ Song Title
+No build step or external framework is required.
 
-✔ Artist Name
+## Author
 
-✔ Duration Display
+Fazal Abbas
 
-✔ Progress Bar
+- GitHub: https://github.com/fazal305
+- LinkedIn: https://www.linkedin.com/in/fazal-abbas-4653dg86
 
-✔ Volume Control
-
-✔ Playlist
-
-✔ Autoplay
-
-✔ Responsive Interface
-
----
-
-## ▶️ How To Run
-
-1. Download or clone the repository.
-
-2. Add audio files inside:
-
-```text
-assets/audio
-```
-
-3. Add cover images inside:
-
-```text
-assets/covers
-```
-
-4. Open:
-
-```text
-index.html
-```
-
-in your browser.
-
----
-
-## 👨‍💻 Developer
-
-**Fazal Abbas**
-
-GitHub:
-https://github.com/fazal305
-
-LinkedIn:
-https://www.linkedin.com/in/fazal-abbas-4653dg86
-
----
-
-## 📄 License
+## License
 
 This project is licensed under the MIT License.

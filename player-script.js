@@ -6,7 +6,7 @@ const playlist = [
     duration: "2:45",
     src: "assets/audio/track-01.mp3",
     cover: "assets/covers/cover-01.jpg",
-    color: "#00f5ff"
+    color: "#00c2ff"
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ const playlist = [
     duration: "3:12",
     src: "assets/audio/track-02.mp3",
     cover: "assets/covers/cover-02.jpg",
-    color: "#a855f7"
+    color: "#8b5cf6"
   },
   {
     id: 3,
@@ -76,7 +76,6 @@ const playlistPanel = document.querySelector("#playlist-panel");
 const playlistList = document.querySelector("#playlist-list");
 const trackCount = document.querySelector("#track-count");
 
-// Loads selected song data into the player.
 function loadSong(index) {
   const song = playlist[index];
 
@@ -101,25 +100,30 @@ function loadSong(index) {
   highlightActiveRow(index);
 }
 
-// Plays the current song.
 function playSong() {
-  audio.play();
+  const playRequest = audio.play();
+
+  if (playRequest !== undefined) {
+    playRequest.catch(function () {
+      pauseSong();
+    });
+  }
 
   isPlaying = true;
-  playBtn.textContent = "⏸";
+  playBtn.textContent = "PAUSE";
+  playBtn.setAttribute("aria-label", "Pause current track");
   vinylDisc.classList.add("is-playing");
 }
 
-// Pauses the current song.
 function pauseSong() {
   audio.pause();
 
   isPlaying = false;
-  playBtn.textContent = "▶";
+  playBtn.textContent = "PLAY";
+  playBtn.setAttribute("aria-label", "Play current track");
   vinylDisc.classList.remove("is-playing");
 }
 
-// Switches between play and pause.
 function togglePlayPause() {
   if (isPlaying) {
     pauseSong();
@@ -129,40 +133,28 @@ function togglePlayPause() {
   playSong();
 }
 
-// Moves to the next song.
 function nextSong() {
   if (isShuffled) {
     currentIndex = getNextShuffleIndex();
   } else {
-    currentIndex++;
-
-    if (currentIndex >= playlist.length) {
-      currentIndex = 0;
-    }
+    currentIndex = (currentIndex + 1) % playlist.length;
   }
 
   loadSong(currentIndex);
   playSong();
 }
 
-// Moves to the previous song or restarts current song.
 function prevSong() {
   if (audio.currentTime > 3) {
     audio.currentTime = 0;
     return;
   }
 
-  currentIndex--;
-
-  if (currentIndex < 0) {
-    currentIndex = playlist.length - 1;
-  }
-
+  currentIndex = currentIndex === 0 ? playlist.length - 1 : currentIndex - 1;
   loadSong(currentIndex);
   playSong();
 }
 
-// Updates progress bar while audio is playing.
 function updateProgressBar() {
   if (!audio.duration) {
     return;
@@ -177,7 +169,6 @@ function updateProgressBar() {
   updateRangeFill(progressBar, progressPercent);
 }
 
-// Moves audio to selected progress position.
 function seekTo(value) {
   if (!audio.duration) {
     return;
@@ -186,9 +177,8 @@ function seekTo(value) {
   audio.currentTime = (value / 100) * audio.duration;
 }
 
-// Updates audio volume.
 function updateVolume(value) {
-  const volumeLevel = value / 100;
+  const volumeLevel = Number(value) / 100;
 
   audio.volume = volumeLevel;
   volumeValue.textContent = `${value}%`;
@@ -199,22 +189,25 @@ function updateVolume(value) {
   if (volumeLevel === 0) {
     isMuted = true;
     audio.muted = true;
-    muteBtn.textContent = "🔇";
   } else {
     isMuted = false;
     audio.muted = false;
-    muteBtn.textContent = "🔊";
   }
+
+  updateMuteButton();
 }
 
-// Mutes or unmutes the player.
 function toggleMute() {
   isMuted = !isMuted;
   audio.muted = isMuted;
-  muteBtn.textContent = isMuted ? "🔇" : "🔊";
+  updateMuteButton();
 }
 
-// Loads saved volume from browser storage.
+function updateMuteButton() {
+  muteBtn.textContent = isMuted ? "MUTE" : "VOL";
+  muteBtn.setAttribute("aria-label", isMuted ? "Unmute audio" : "Mute audio");
+}
+
 function loadVolume() {
   const savedVolume = localStorage.getItem("musicPlayerVolume") || "80";
 
@@ -222,9 +215,8 @@ function loadVolume() {
   updateVolume(savedVolume);
 }
 
-// Converts seconds into MM:SS format.
 function formatTime(seconds) {
-  if (Number.isNaN(seconds)) {
+  if (Number.isNaN(seconds) || !Number.isFinite(seconds)) {
     return "0:00";
   }
 
@@ -234,7 +226,6 @@ function formatTime(seconds) {
   return `${minutes}:${remainingSeconds}`;
 }
 
-// Builds the playlist rows.
 function renderPlaylist() {
   playlistList.innerHTML = "";
   trackCount.textContent = `${playlist.length} tracks`;
@@ -244,18 +235,16 @@ function renderPlaylist() {
     row.className = "playlist-row";
     row.type = "button";
     row.dataset.index = index;
+    row.setAttribute("aria-label", `Play ${song.title} by ${song.artist}`);
 
     row.innerHTML = `
       <span class="track-number">${String(index + 1).padStart(2, "0")}</span>
-
       <span>
         <span class="track-title">${song.title}</span>
         <span class="track-artist">${song.artist}</span>
       </span>
-
       <span class="playlist-right">
         <span class="track-duration">${song.duration}</span>
-
         <span class="equalizer" aria-hidden="true">
           <span></span>
           <span></span>
@@ -268,51 +257,48 @@ function renderPlaylist() {
   });
 }
 
-// Highlights the active playlist song.
 function highlightActiveRow(index) {
   const rows = document.querySelectorAll(".playlist-row");
 
   rows.forEach(function (row) {
     row.classList.remove("is-active");
+    row.setAttribute("aria-current", "false");
   });
 
   const activeRow = document.querySelector(`.playlist-row[data-index="${index}"]`);
 
   if (activeRow) {
     activeRow.classList.add("is-active");
+    activeRow.setAttribute("aria-current", "true");
   }
 }
 
-// Changes repeat mode.
 function toggleRepeat() {
   if (repeatMode === "none") {
     repeatMode = "all";
-    repeatBtn.textContent = "🔁";
-    repeatBtn.classList.add("is-active");
   } else if (repeatMode === "all") {
     repeatMode = "one";
-    repeatBtn.textContent = "🔂";
-    repeatBtn.classList.add("is-active");
   } else {
     repeatMode = "none";
-    repeatBtn.textContent = "🔁";
-    repeatBtn.classList.remove("is-active");
   }
+
+  updateRepeatButton();
 }
 
-// Turns shuffle on or off.
+function updateRepeatButton() {
+  repeatBtn.classList.toggle("is-active", repeatMode !== "none");
+  repeatBtn.textContent = repeatMode === "one" ? "RPT 1" : "RPT";
+  repeatBtn.setAttribute("aria-label", `Repeat mode: ${repeatMode}`);
+}
+
 function toggleShuffle() {
   isShuffled = !isShuffled;
   shuffleBtn.classList.toggle("is-active", isShuffled);
+  shuffleBtn.setAttribute("aria-pressed", String(isShuffled));
 
-  if (isShuffled) {
-    shuffleHistory = [currentIndex];
-  } else {
-    shuffleHistory = [];
-  }
+  shuffleHistory = isShuffled ? [currentIndex] : [];
 }
 
-// Gets a random unplayed song index.
 function getNextShuffleIndex() {
   if (shuffleHistory.length >= playlist.length) {
     shuffleHistory = [currentIndex];
@@ -329,7 +315,6 @@ function getNextShuffleIndex() {
   return randomIndex;
 }
 
-// Handles what happens when a song ends.
 function handleSongEnd() {
   if (repeatMode === "one") {
     loadSong(currentIndex);
@@ -339,13 +324,14 @@ function handleSongEnd() {
 
   if (currentIndex === playlist.length - 1 && repeatMode === "none" && !isShuffled) {
     pauseSong();
+    audio.currentTime = 0;
+    updateProgressBar();
     return;
   }
 
   nextSong();
 }
 
-// Updates the filled part of range sliders.
 function updateRangeFill(rangeInput, value) {
   rangeInput.style.background = `
     linear-gradient(
@@ -358,7 +344,6 @@ function updateRangeFill(rangeInput, value) {
   `;
 }
 
-// Creates initials for missing cover images.
 function getSongInitials(title) {
   return title
     .split(" ")
@@ -370,11 +355,20 @@ function getSongInitials(title) {
     .toUpperCase();
 }
 
-// Starts the music player.
+function togglePlaylist() {
+  const isHidden = !playlistPanel.hidden;
+
+  playlistPanel.hidden = isHidden;
+  playlistToggle.textContent = isHidden ? "Show Playlist" : "Hide Playlist";
+  playlistToggle.setAttribute("aria-expanded", String(!isHidden));
+}
+
 function init() {
   renderPlaylist();
   loadVolume();
   loadSong(currentIndex);
+  updateRepeatButton();
+  updateMuteButton();
 
   playBtn.addEventListener("click", togglePlayPause);
   nextBtn.addEventListener("click", nextSong);
@@ -391,10 +385,7 @@ function init() {
     updateVolume(volumeSlider.value);
   });
 
-  playlistToggle.addEventListener("click", function () {
-    playlistPanel.hidden = !playlistPanel.hidden;
-    playlistToggle.textContent = playlistPanel.hidden ? "Show Playlist" : "Hide Playlist";
-  });
+  playlistToggle.addEventListener("click", togglePlaylist);
 
   playlistList.addEventListener("click", function (event) {
     const row = event.target.closest(".playlist-row");

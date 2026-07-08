@@ -19,8 +19,21 @@ body {
   font-family: "Inter", sans-serif;
   color: var(--text-color);
   background:
-    radial-gradient(circle at top, color-mix(in srgb, var(--accent-color) 22%, transparent), transparent 34%),
+    radial-gradient(
+      circle at top,
+      color-mix(in srgb, var(--accent-color) 22%, transparent),
+      transparent 34%
+    ),
     linear-gradient(135deg, #050508, var(--bg-color));
+}
+
+.sr-only {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 /* LAYOUT */
@@ -252,7 +265,10 @@ body {
   cursor: pointer;
   color: var(--text-color);
   background: rgba(255, 255, 255, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .control-btn {
@@ -260,24 +276,26 @@ body {
   place-items: center;
   border-radius: 50%;
   color: var(--accent-color);
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
 .small-control {
   width: 44px;
   height: 44px;
-  font-size: 1.05rem;
 }
 
 .medium-control {
   width: 54px;
   height: 54px;
-  font-size: 1.25rem;
 }
 
 .play-control {
   width: 72px;
   height: 72px;
-  font-size: 1.8rem;
+  font-size: 0.78rem;
   color: #050508;
   background: var(--accent-color);
   box-shadow: 0 0 30px color-mix(in srgb, var(--accent-color) 70%, transparent);
@@ -308,6 +326,10 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 14px;
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--accent-color);
 }
 
 .volume-value {
